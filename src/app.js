@@ -17,12 +17,7 @@ app.use(cookieParser())
 app.use(helmet())
 app.use(morgan('dev'))
 app.use(express.json())
-app.use(
-	cors({
-		origin: 'http://localhost:5173', // ваш Vite-порт
-		credentials: true, // ← разрешает куки
-	}),
-)
+app.use(cors())
 
 
 // Routes
