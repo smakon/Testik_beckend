@@ -39,8 +39,8 @@ app.use('/api/tests', testsRouter)
 app.use('/api/questions', questionsRouter)
 app.use('/api/results', resultsRouter)
 
-// --- Фронт в продакшене: один сервер отдаёт и API, и статику ---
-const distPath = path.join(__dirname, '../../frontend/dist')
+// --- Фронт в продакшене: статика из backend/dist (собирается Vite’ом, можно коммитить в git) ---
+const distPath = path.join(__dirname, '../dist')
 if (process.env.NODE_ENV === 'production') {
 	app.use(express.static(distPath))
 	app.use((req, res, next) => {
