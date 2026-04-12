@@ -1,8 +1,14 @@
 require('dotenv').config()
 const app = require('./src/app')
 
-const HOST = '0.0.0.0'
 
-app.listen(PORT, HOST, () => {
-	console.log(`Server listening on http://${HOST}`)
-})
+
+const port = process.env.PORT || 3000;  
+
+app.get('/', (req, res) => {  
+   res.send('Hello World!');  
+});  
+
+app.listen(port, () => {  
+   console.log(`App listening on port ${port}`);  
+});  
