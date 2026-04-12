@@ -1,9 +1,11 @@
 require('dotenv').config()
 const app = require('./src/app')
+const connectDB = require('./src/models/connection')
 
-const PORT = 8080
-const HOST = '0.0.0.0'
+const PORT = Number(process.env.PORT) || 3000
 
-app.listen(PORT, HOST, () => {
-	console.log(`Server listening on http://${HOST}:${PORT}`)
+connectDB().then(() => {
+	app.listen(PORT, () => {
+		console.log(`🚀 Сервер запущен на порту ${PORT}`)
+	})
 })

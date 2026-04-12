@@ -1,8 +1,13 @@
 const mongoose = require('mongoose')
 
 const connectDB = async () => {
+	const uri = process.env.MONGODB_URI
+	if (!uri) {
+		console.error('❌ В backend/.env задайте MONGODB_URI=... (см. backend/env.example)')
+		process.exit(1)
+	}
 	try {
-		await mongoose.connect('mongodb://gen_user:i%3Ab%3BU3w9kIp)%7Ba@5.42.113.200:27017/default_db?authSource=admin&directConnection=true') // ← никаких опций!
+		await mongoose.connect(uri)
 		console.log('✅ MongoDB подключена')
 	} catch (err) {
 		console.error('❌ Ошибка подключения к MongoDB:', err)

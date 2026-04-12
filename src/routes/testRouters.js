@@ -6,32 +6,25 @@ const {
 	deleteTest,
 	getUserTests,
 	getTestRaitings,
-   getTestByCode,
-   getWhoPassedTest,
-   getTestMaxPoints
+	getTestByCode,
+	getWhoPassedTest,
+	getTestMaxPoints,
 } = require('../controllers/testController')
 const router = express.Router()
 const authMiddleware = require('../middleware/auth')
 
-// Создать новый тест
+// Сначала «жёсткие» пути, потом /:id — иначе Express может перепутать сегменты
 router.post('/createTest', authMiddleware, createTest)
 
-// Получить тест по ID
+router.get('/code/:code', getTestByCode)
+router.get('/user/:userId', getUserTests)
+router.get('/:testId/rating', getTestRaitings)
+router.get('/:testId/stat', getWhoPassedTest)
+router.get('/:testId/maxPoints', getTestMaxPoints)
+
 router.get('/:id', getTestById)
 
-router.get('/user/:userId', getUserTests)
-
-// Обновить тест
 router.put('/:id', authMiddleware, updateTest)
-
-// Удалить тест
 router.delete('/:id', authMiddleware, deleteTest)
 
-router.get('/:testId/rating', getTestRaitings)
-
-router.get('/code/:code', getTestByCode)
-
-router.get('/:testId/stat', getWhoPassedTest)
-
-router.get('/:testId/maxPoints', getTestMaxPoints)
 module.exports = router

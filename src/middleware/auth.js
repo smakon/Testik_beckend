@@ -2,8 +2,7 @@ const User = require('../models/User')
 
 const authMiddleware = async (req, res, next) => {
 	const userId = req.cookies.token
-   console.log(userId);
-   
+
 	if (!userId) {
 		return res.status(401).json({ error: 'Не авторизован' })
 	}
