@@ -26,6 +26,10 @@ app.use('/api/users', userRoutes)
 app.use('/api/tests', testsRouter)
 app.use('/api/questions', questionsRouter)
 app.use('/api/results', resultsRouter)
+
+app.get('/login', (req, res) => {
+	res.sendFile(path.join(__dirname, 'dist', 'index.html'))
+})
 app.get('/', (req, res) => {
 	res.sendFile(path.join(__dirname, 'dist', 'index.html'))
 })
