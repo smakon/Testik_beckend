@@ -31,7 +31,7 @@ app.get('/', (req, res) => {
 })
 // Обработка 404
 app.use((req, res) => {
-  res.status(404).json({ error: req });
+  res.status(404).json({ error: 'Sorry' });
 });
 
 module.exports = app
