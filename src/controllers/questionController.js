@@ -22,16 +22,31 @@ const createQuestion = async (req, res) => {
 			return res.status(400).json({ error: 'ID теста обязателен' })
 		}
 
-		if (!answers || !Array.isArray(answers) || answers.length === 0) {
-			return res
-				.status(400)
-				.json({ error: 'Необходимо добавить варианты ответов' })
+		const allowedQuestionTypes = ['multiple_choice', 'true_false', 'text']
+		if (!allowedQuestionTypes.includes(questionType)) {
+			return res.status(400).json({ error: 'Некорректный тип вопроса' })
 		}
 
-		if (!answers.some(a => a.isCorrect)) {
-			return res
-				.status(400)
-				.json({ error: 'Необходимо выбрать правильный ответ' })
+		const normalizedAnswers = Array.isArray(answers) ? answers : []
+		const preparedAnswers = normalizedAnswers
+			.map(a => ({
+				text: (a?.text || '').trim(),
+				isCorrect: Boolean(a?.isCorrect),
+			}))
+			.filter(a => a.text !== '')
+
+		// Если вариантов нет (или они пустые), автоматически считаем вопрос текстовым
+		const effectiveQuestionType =
+			questionType === 'text' || preparedAnswers.length === 0
+				? 'text'
+				: questionType
+
+		if (effectiveQuestionType !== 'text') {
+			if (!preparedAnswers.some(a => a.isCorrect)) {
+				return res
+					.status(400)
+					.json({ error: 'Необходимо выбрать правильный ответ' })
+			}
 		}
 
 		// Проверяем существование теста
@@ -48,9 +63,9 @@ const createQuestion = async (req, res) => {
 			question,
 			image: image || null,
 			mimeType: mimeType || 'image/png',
-			answers,
+			answers: effectiveQuestionType === 'text' ? [] : preparedAnswers,
 			points,
-			questionType,
+			questionType: effectiveQuestionType,
 			testId,
 			order,
 		})

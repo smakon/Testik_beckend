@@ -132,6 +132,7 @@ const getTestRaitings = async (req, res) => {
 					userId: user._id,
 					name: user.name,
 					score: result.score,
+					userAnswers: result.userAnswers || [],
 					completedAt: result.completedAt,
 				})),
 		)
